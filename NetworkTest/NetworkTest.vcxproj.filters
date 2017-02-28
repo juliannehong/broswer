@@ -16,15 +16,41 @@
     <Filter Include="Header Files\Public">
       <UniqueIdentifier>{c3d39be7-057f-49ab-8c82-b30ed61c872e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Private">
+      <UniqueIdentifier>{cb5b0806-f3c7-470c-b127-e3eb50a10333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Private">
+      <UniqueIdentifier>{0d1a6d87-e763-4e05-b861-88c6368a262d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{35c35551-9905-467b-a4a0-1c16f0ebffd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetTest.h">
       <Filter>Header Files\Public</Filter>
     </ClInclude>
+    <ClInclude Include="NetRequest.h">
+      <Filter>Header Files\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="URLVerifier.h">
+      <Filter>Header Files\Private</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="NetRequest.cpp">
+      <Filter>Source Files\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="URLVerifier.cpp">
+      <Filter>Source Files\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Networking API description.txt">
-      <Filter>Header Files</Filter>
+      <Filter>Documentation</Filter>
+    </Text>
+    <Text Include="url-spec.txt">
+      <Filter>Documentation</Filter>
     </Text>
   </ItemGroup>
 </Project>

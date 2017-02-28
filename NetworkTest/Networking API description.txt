@@ -12,11 +12,30 @@ Basic Theory:
 	the request starts its asynchronous I/O and immediately returns.
 
 3). The client eventually waits for the I/O to complete, or registers a completion handler 
-	for notification of I/O completion. 
-	
-	a). If the client waits for I/O completion, the client thread will block until either 
-		the I/O is complete, or the request fails. 
+	for notification of I/O completion. The I/O will be running on a background thread, 
+	and will first call the completion handler, if it exists, then signals completion. 
+	This ensures that whatever choice the client makes (or both), the completion will 
+	always be detected.
 
-	b). If the client requests notifications, the request will call the completion handler
-		on the background I/O thread. The background thread will block until the client's
-		handler returns control to the I/O thread, at which point the thread will close. <<<<< AJL - we can optimize this with factory object.
+
+Streaming systems will need a different approach, and we may only realize it when we start to 
+try them in the browser.
+
+
+This system should be based upon a full platform independence layer, with the necessary threading/
+event signaling functions abstracted to ensure consistent operation no matter what platform is used.
+
+Current system won't support IRIs (sorry Julianne), but that can be added so long as the URL code is 
+sufficiently isolated.
+
+The background I/O thread needs to do several things in order to make things work:
+
+1). Resolve the URL to an IP address by using DNS, if necessary. 
+
+2). Open a TCP connection to the IP address the server sends back.
+
+3). Read all data available from the server for that URL. 
+
+4). Close the connection and signal completion.
+
+

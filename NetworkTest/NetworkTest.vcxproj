@@ -146,10 +146,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="NetRequest.h" />
     <ClInclude Include="NetTest.h" />
+    <ClInclude Include="URLVerifier.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Networking API description.txt" />
+    <Text Include="url-spec.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="NetRequest.cpp" />
+    <ClCompile Include="URLVerifier.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

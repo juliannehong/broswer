@@ -3,8 +3,15 @@
 class CNetRequest :
 	public INetRequest
 {
+
+
+
 public:
-	CNetRequest();
+	CNetRequest(char* url);
 	~CNetRequest();
+
+	int Start(CompletionHandler pcallback = nullptr);
+	int WaitForCompletion();
+	void* GetResultData();
 };
 

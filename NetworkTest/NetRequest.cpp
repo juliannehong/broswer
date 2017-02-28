@@ -1,14 +1,26 @@
 #include "NetRequest.h"
 
-
-
-CNetRequest::CNetRequest()
+struct NetException
 {
-}
+	int code;
+	NetException(int c) : code(c) {}
+	~NetException() {}
+};
 
+CNetRequest::CNetRequest(char * url)
+{
+	//Check this URL for validity.
+
+}
 
 CNetRequest::~CNetRequest()
 {
+}
+
+int CNetRequest::Start(CompletionHandler pcallback)
+{
+	//initialize thread data, then spawn off the request thread.
+	return 0;
 }
 
 
@@ -22,7 +34,7 @@ int NETAPI_ENTRY CreateNetworkRequest(char* pURL, INetRequest *& pNetRequest)
 	//check the URL to see if it's valid. << no checks for now.
 	try
 	{
-		pNetRequest = new CNetRequest(pUrl);
+		pNetRequest = new CNetRequest(pURL);
 	}
 	catch(NetException e)
 	{

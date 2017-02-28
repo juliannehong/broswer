@@ -3,7 +3,7 @@
 
 //-----------------------------------------
 // Move this to a PIL library eventually.
-// This is all Windows specific!
+// This is currently Windows specific!
 //-----------------------------------------
 #define API_EXPORT __declspec(dllexport)
 #define API_IMPORT __declspec(dllimport)
@@ -19,7 +19,6 @@
 
 typedef std::function<int(int ResultCode)> CompletionHandler;
 
-
 //use COM to hide the implementation details.
 struct INetRequest
 {
@@ -33,3 +32,4 @@ NETAPI_ENTRY
 CreateNetworkRequest(
 	char* pURL,
 	INetRequest* &pNetRequest);
+
