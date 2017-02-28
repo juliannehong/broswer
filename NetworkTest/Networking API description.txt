@@ -1,0 +1,22 @@
+
+Our networking system should simply access URLs and read in the data provided by the URL. 
+
+Basic Theory:
+
+1). Create a request for a specific URL. If the URL is 
+	syntactically invalid (i.e. it's formatted wrong, ends suddenly, or something), we
+	return an error code. Otherwise, we create a request object, pass it back to
+	the caller, and return a success code.
+
+2). The client tells the request object to start reading data from the URL. At this point,
+	the request starts its asynchronous I/O and immediately returns.
+
+3). The client eventually waits for the I/O to complete, or registers a completion handler 
+	for notification of I/O completion. 
+	
+	a). If the client waits for I/O completion, the client thread will block until either 
+		the I/O is complete, or the request fails. 
+
+	b). If the client requests notifications, the request will call the completion handler
+		on the background I/O thread. The background thread will block until the client's
+		handler returns control to the I/O thread, at which point the thread will close. <<<<< AJL - we can optimize this with factory object.
