@@ -1,9 +1,11 @@
 #pragma once
 #include "NetTest.h"
+#include <boost\thread.hpp>
+
 class CNetRequest :
 	public INetRequest
 {
-
+	
 
 
 public:

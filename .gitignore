@@ -1,0 +1,7 @@
+# ignored files
+
+# generated debug/release directories
+
+**/Debug
+**/Release
+**/.vs
