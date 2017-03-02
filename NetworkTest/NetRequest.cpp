@@ -7,7 +7,8 @@ struct NetException
 	~NetException() {}
 };
 
-CNetRequest::CNetRequest(char * url)
+CNetRequest::CNetRequest(char * url):
+	iothread(CNetRequest::ThreadEntry)
 {
 	//Check this URL for validity.
 
@@ -20,6 +21,7 @@ CNetRequest::~CNetRequest()
 int CNetRequest::Start(CompletionHandler pcallback)
 {
 	//initialize thread data, then spawn off the request thread.
+	
 	return 0;
 }
 

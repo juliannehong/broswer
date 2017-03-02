@@ -5,8 +5,8 @@
 class CNetRequest :
 	public INetRequest
 {
-	
 
+	int ThreadEntry();
 
 public:
 	CNetRequest(char* url);
