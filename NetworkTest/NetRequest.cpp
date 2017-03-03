@@ -53,7 +53,7 @@ CObjectPtr<INetRequest> NETAPI_ENTRY CreateNetworkRequest(char * pURL)
 	{
 		return CObjectPtr<INetRequest>(new CNetRequest(pURL), true);
 	}
-	catch(NetRequestException e)
+	catch(NetException e)
 	{
 		return nullptr;
 	}

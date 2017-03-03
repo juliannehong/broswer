@@ -4,7 +4,7 @@
 
 #include <guiddef.h>
 
-BrGuid BRCOMMON_API CastGuid(const struct _GUID& g)
+BrGuid COMMONAPI_ENTRY CastGuid(const struct _GUID& g)
 {
 	static_assert(sizeof(BrGuid) == sizeof(_GUID), "BRGUID and GUID are not the same size!");
 	BrGuid ret;
@@ -41,7 +41,7 @@ bool ParseValue(T& val, const char* c)
 	return true;
 }
 
-BrGuid BRCOMMON_API CastGuid(const char * c)
+BrGuid COMMONAPI_ENTRY CastGuid(const char * c)
 {
 	BrGuid ret;
 	memset(&ret, 0, sizeof(ret));

@@ -23,6 +23,14 @@ INetRequest : public IBrUnknown
 	BRMETHODTYPE(void*,GetResultData());
 };
 
+BROWSER_INTERFACE("{A7C30AEF-C3C5-4E32-AAB6-D3E0BB7E0C1C}")
+INetTcpSocket : public IBrUnknown
+{
+	BRMETHOD(Read(U8* pBuffer, U32 BufferSize));
+	BRMETHOD(Write(U8* pBuffer, U32 BufferSize));
+
+};
+
 CObjectPtr<INetRequest>
 NETAPI_ENTRY
 CreateNetworkRequest(

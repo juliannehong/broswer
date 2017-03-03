@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="BrCommon.h" />
     <ClInclude Include="BrDefs.h" />
+    <ClInclude Include="BrEvent.h" />
     <ClInclude Include="BrFile.h" />
     <ClInclude Include="BrInterface.h" />
     <ClInclude Include="BrObjPtr.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Thread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BrEvent.cpp" />
     <ClCompile Include="CastGuid.cpp" />
     <ClCompile Include="Thread.cpp" />
   </ItemGroup>

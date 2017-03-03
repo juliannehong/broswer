@@ -21,12 +21,12 @@ typedef struct _BrGuid
 	U8 Data4[8];
 } BrGuid;
 
-bool BR_INLINE IsBrGUIDEqual(BrGuid& rhs, BrGuid& lhs)
+BR_INLINE bool IsBrGUIDEqual(BrGuid& rhs, BrGuid& lhs)
 {
 	return !memcmp(&rhs, &lhs, sizeof(BrGuid));
 }
 
-bool BR_INLINE InlineIsBrGUIDEqual(BrGuid& rhs, BrGuid& lhs)
+BR_INLINE bool InlineIsBrGUIDEqual(BrGuid& rhs, BrGuid& lhs)
 {
 	return ((((U32*)&rhs)[0] == ((U32*)&lhs)[0]) &&
 			(((U32*)&rhs)[1] == ((U32*)&lhs)[1]) &&
@@ -35,12 +35,12 @@ bool BR_INLINE InlineIsBrGUIDEqual(BrGuid& rhs, BrGuid& lhs)
 }
 
 #ifdef __cplusplus
-bool operator==(BrGuid& lhs, BrGuid& rhs)
+BR_INLINE bool operator==(BrGuid& lhs, BrGuid& rhs)
 {
-	return InlineIsBrGUIDEqual(lhs, rhs);
+	return IsBrGUIDEqual(lhs, rhs);
 }
 
-bool operator!=(BrGuid& lhs, BrGuid& rhs)
+BR_INLINE bool operator!=(BrGuid& lhs, BrGuid& rhs)
 {
 	return !(lhs == rhs);
 }

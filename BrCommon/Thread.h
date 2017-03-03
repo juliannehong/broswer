@@ -20,11 +20,12 @@ class CThread :
 public:
 	CThread(ThreadFunction pThreadFunc, bool StartImmediate);
 	~CThread();
-
-
+	
 	//IBrThread
 	BrResult BRMETHODCALLTYPE Start();
-
 	CObjectPtr<IBrEvent> BRMETHODCALLTYPE GetCancellationEvent();
+	BrResult BRMETHODCALLTYPE Cancel();
+	BrResult BRMETHODCALLTYPE Terminate(BrResult ExitCode);
+	BrResult BRMETHODCALLTYPE GetExitCode();
 };
 
