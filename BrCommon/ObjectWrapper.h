@@ -14,6 +14,9 @@ class ObjectWrapper :
 	//updates to refcount should be threadsafe.
 	std::atomic<U32> refcount;
 
+protected:
+	virtual bool IsIIDValid(BrGuid& riid) = 0;
+
 public:
 
 	ObjectWrapper() : refcount(1)
@@ -23,6 +26,22 @@ public:
 	virtual ~ObjectWrapper()
 	{
 		assert(refcount == 0);
+	}
+
+	BrResult BRMETHODCALLTYPE QueryInterface(BrGuid& riid, void** ppvObject)
+	{
+		if(!ppvObject)
+		{
+			return -1; // INVALID_ARG
+		}
+		*ppvObject = nullptr;
+		if(IsIIDValid(riid))
+		{
+			*ppvObject = (void*)this;
+			AddRef();
+			return 0; // OK
+		}
+		return -2; // NO_INTERFACE
 	}
 
 	U32 BRMETHODCALLTYPE AddRef()

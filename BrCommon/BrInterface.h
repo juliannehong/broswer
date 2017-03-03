@@ -3,9 +3,8 @@
 #include "BrTypes.h"
 
 #ifndef BROWSER_INTERFACE
-#define BROWSER_INTERFACE(InterfaceName, BaseInterface, ...) \
-	DEFINE_BRGUID(IID_ ## InterfaceName, __VA_ARGS__); \
-	struct BR_NOVTABLE InterfaceName : public BaseInterface
+#define BROWSER_INTERFACE(x) \
+	struct BR_NOVTABLE BR_UUID(x)
 #endif
 
 #ifndef BRMETHODCALLTYPE
@@ -26,7 +25,7 @@
 
 #ifndef BRMETHOD
 #define BRMETHOD(Method)\
-	virtual BR_NOTHROW BRRESULT BRMETHODCALLTYPE Method = 0;
+	virtual BR_NOTHROW BrResult BRMETHODCALLTYPE Method = 0;
 #endif
 
 #ifndef BRMETHODTYPE
@@ -35,11 +34,21 @@
 #endif
 
 // {3E21EDFD-3B6E-49BA-B4DD-3BE120C9747F}
-DEFINE_BRGUID(IID_IBrUnknown,
-			0x3e21edfd, 0x3b6e, 0x49ba, 0xb4, 0xdd, 0x3b, 0xe1, 0x20, 0xc9, 0x74, 0x7f);
-
-struct BR_NOVTABLE IBrUnknown
+BROWSER_INTERFACE("{3E21EDFD-3B6E-49BA-B4DD-3BE120C9747F}")
+IBrUnknown
 {
+	BRMETHOD(QueryInterface(BrGuid& rIID, void** ppvObject));
 	BRMETHODTYPE(U32, AddRef());
 	BRMETHODTYPE(U32, Release());
 };
+
+#ifndef CAST_UUID
+#ifdef _WIN32
+BrGuid COMMONAPI_ENTRY CastGuid(const struct _GUID& g);
+#else
+BrGuid COMMONAPI_ENTRY CastGuid(const char* c);
+#endif
+#define CAST_UUID(U) CastGuid(U)
+#endif
+
+#define GET_UUID(T) CAST_UUID(BR_UUIDOF(T))

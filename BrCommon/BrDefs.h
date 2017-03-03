@@ -32,27 +32,6 @@
 #endif
 #endif
 
-//These next two are for weak symbols (multiple definitions, all the same). Both need to be used.
-//E.x. BR_SELECTANY int BR_WEAK WeakSymbolInHeader = 10;
-//This allows us to place variables in a header and initialize them without violating the one-definition rule.
-//NOTE THIS ONLY WORKS RELIABLY IF ALL DEFINITIONS ARE THE SAME!
-
-#ifndef BR_WEAK
-#ifdef _WIN32
-#define BR_WEAK 
-#else
-#define BR_WEAK __attribute__((weak))
-#endif
-#endif
-
-#ifndef BR_SELECTANY
-#ifdef _WIN32
-#define BR_SELECTANY __declspec(selectany)
-#else
-#define BR_SELECTANY 
-#endif
-#endif
-
 #ifndef BR_NOVTABLE
 #ifdef _WIN32
 #define BR_NOVTABLE __declspec(novtable)
@@ -70,3 +49,24 @@
 #endif
 #endif
 
+#ifndef BR_UUID
+#ifdef _WIN32
+#define BR_UUID(x) __declspec(uuid(x))
+#else
+#define BR_UUID(x) __attribute__((uuid(x)))
+#endif
+#endif
+
+#ifndef BR_UUIDOF
+#ifdef _WIN32
+#define BR_UUIDOF(T) __uuidof(T)
+#else
+#define BR_UUIDOF(T) __builtin_uuidof(T)
+#endif
+#endif
+
+// Token pasting macro for identifier generation.
+#ifndef CONCAT
+#define CONCAT_INT(x, y) x ## y
+#define CONCAT(x, y) CONCAT_INT(x, y)
+#endif

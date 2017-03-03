@@ -1,18 +1,12 @@
 #pragma once
 //Network test API.
 
-//-----------------------------------------
-// Move this to a PIL library eventually.
-// This is currently Windows specific!
-//-----------------------------------------
-#define API_EXPORT __declspec(dllexport)
-#define API_IMPORT __declspec(dllimport)
-
+#include <BrCommon.h>
 
 #ifdef NETWORKTEST_EXPORTS
-#define NETAPI_ENTRY API_EXPORT
+#define NETAPI_ENTRY BR_EXPORT
 #else
-#define NETAPI_ENTRY API_IMPORT
+#define NETAPI_ENTRY BR_IMPORT
 #endif
 
 #include <functional>
@@ -20,16 +14,17 @@
 typedef std::function<int(int ResultCode)> CompletionHandler;
 
 //use COM to hide the implementation details.
-struct INetRequest
+
+BROWSER_INTERFACE("{0991DED7-6055-4317-B247-7BA635CBF032}")
+INetRequest : public IBrUnknown
 {
-	virtual int Start(CompletionHandler pCompletionHandler = nullptr) = 0;
-	virtual int WaitForCompletion() = 0;
-	virtual void* GetResultData() = 0;
+	BRMETHOD(Start(CompletionHandler pCompletionHandler = nullptr));
+	BRMETHOD(WaitForCompletion());
+	BRMETHODTYPE(void*,GetResultData());
 };
 
-int
+CObjectPtr<INetRequest>
 NETAPI_ENTRY
 CreateNetworkRequest(
-	char* pURL,
-	INetRequest* &pNetRequest);
+	char* pURL);
 

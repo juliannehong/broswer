@@ -7,8 +7,25 @@ struct NetException
 	~NetException() {}
 };
 
+BrResult CNetRequest::ThreadFunc(CObjectPtr<IBrThread> pThread)
+{
+	//Open a network socket to the URL for HTTP.
+
+}
+
+bool CNetRequest::IsIIDValid(BrGuid & riid)
+{
+	if(riid == GET_UUID(INetRequest) || riid == GET_UUID(IBrUnknown))
+	{
+		return true;
+	}
+	return false;
+}
+
 CNetRequest::CNetRequest(char * url):
-	iothread(CNetRequest::ThreadEntry)
+	callback(nullptr),
+	iothread(CreateBrThread(std::bind(&CNetRequest::ThreadFunc, this, std::placeholders::_1))),
+	complete(CreateBrEvent(true, false))
 {
 	//Check this URL for validity.
 
@@ -18,30 +35,26 @@ CNetRequest::~CNetRequest()
 {
 }
 
-int CNetRequest::Start(CompletionHandler pcallback)
+BrResult CNetRequest::Start(CompletionHandler pcallback)
 {
 	//initialize thread data, then spawn off the request thread.
-	
-	return 0;
+	callback = pcallback;
+	complete->Reset();
+	return iothread->Start();
 }
 
-
-int NETAPI_ENTRY CreateNetworkRequest(char* pURL, INetRequest *& pNetRequest)
+CObjectPtr<INetRequest> NETAPI_ENTRY CreateNetworkRequest(char * pURL)
 {
-	if(pNetRequest)
+	if(!pURL)
 	{
-		//delete this request.
-
+		return nullptr;
 	}
-	//check the URL to see if it's valid. << no checks for now.
 	try
 	{
-		pNetRequest = new CNetRequest(pURL);
+		return CObjectPtr<INetRequest>(new CNetRequest(pURL), true);
 	}
-	catch(NetException e)
+	catch(NetRequestException e)
 	{
-		//return the error code associated with the object.
-		return e.code;
+		return nullptr;
 	}
-	return 0;
 }

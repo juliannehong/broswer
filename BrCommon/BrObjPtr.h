@@ -3,29 +3,49 @@
 #include "BrInterface.h"
 
 template<class T>
-class CBrObjectPtr final
+class CObjectPtr final
 {
 	T* pInterface;
 
 public:
 
-	CBrObjectPtr() : pInterface(nullptr) {}
-	CBrObjectPtr(T* pInt, bool IsSoleOwner = false) : pInterface(pInt)
+	CObjectPtr() : pInterface(nullptr) {}
+	CObjectPtr(T* pInt, bool IsSoleOwner = false) : pInterface(pInt)
 	{
 		if(!IsSoleOwner)
 		{
 			AddRef();
 		}
 	}
-	CBrObjectPtr(CBrObjectPtr<T> &other):pInterface(other.pInterface)
+	CObjectPtr(CObjectPtr<T> &other):pInterface(other.pInterface)
 	{
 		AddRef();
 	}
-	CBrObjectPtr(CBrObjectPtr<T> &&other): pInterface(other.pInterface)
+	CObjectPtr(CObjectPtr<T> &&other): pInterface(other.pInterface)
 	{
 		other.pInterface = nullptr;
 	}
-	~CBrObjectPtr()
+
+	template <typename Q,
+		typename = std::enable_if_t<std::is_base_of<T, Q>::value>,
+		char>
+		CObjectPtr(CObjectPtr<Q> const& other)
+	{
+		//upcast - static casting is legal here.
+		pInterface = (T*)other.pInterface;
+		AddRef();
+	}
+
+	template <typename Q,
+		typename = std::enable_if_t<std::is_base_of<Q, T>::value>,
+		U32>
+		CObjectPtr(CObjectPtr<Q> const& other)
+	{
+		//Downcast - use QueryInterface.
+		pInterface->QueryInterface(GET_UUID(Q), (void**)&pInterface);
+	}
+
+	~CObjectPtr()
 	{
 		Release();
 	}
@@ -55,7 +75,7 @@ public:
 		return pInterface;
 	}
 
-	CBrObjectPtr<T>& operator=(T* pOther)
+	CObjectPtr<T>& operator=(T* pOther)
 	{
 		Release();
 		pInterface = pOther;
@@ -63,7 +83,7 @@ public:
 		return *this;
 	}
 
-	CBrObjectPtr<T>& operator=(CBrObjectPtr<T> &pOther)
+	CObjectPtr<T>& operator=(CObjectPtr<T> &pOther)
 	{
 		Release();
 		pInterface = pOther.pInterface;
@@ -71,12 +91,14 @@ public:
 		return *this;
 	}
 
-	CBrObjectPtr<T>& operator=(CBrObjectPtr<T> &&pOther)
+	CObjectPtr<T>& operator=(CObjectPtr<T> &&pOther)
 	{
 		Release();
 		std::swap(pInterface,pOther.pInterface);
 		return *this;
 	}
+
+	
 
 };
 

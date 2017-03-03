@@ -1,19 +1,25 @@
 #pragma once
 #include "NetTest.h"
-#include <boost\thread.hpp>
+#include <ObjectWrapper.h>
 
 class CNetRequest :
-	public INetRequest
+	public ObjectWrapper<INetRequest>
 {
+	CompletionHandler callback;
+	CObjectPtr<IBrThread> iothread;
+	CObjectPtr<IBrEvent> complete;
 
-	int ThreadEntry();
+
+	BrResult ThreadFunc(CObjectPtr<IBrThread> pThread);
+
+	bool IsIIDValid(BrGuid& riid);
 
 public:
 	CNetRequest(char* url);
 	~CNetRequest();
 
-	int Start(CompletionHandler pcallback = nullptr);
-	int WaitForCompletion();
-	void* GetResultData();
+	BrResult BRMETHODCALLTYPE Start(CompletionHandler pcallback = nullptr);
+	BrResult BRMETHODCALLTYPE WaitForCompletion();
+	void* BRMETHODCALLTYPE GetResultData();
 };
 
