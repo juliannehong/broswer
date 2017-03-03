@@ -36,7 +36,7 @@ UINT CThread::ThreadEntrypoint()
 
 CThread::CThread(ThreadFunction pThreadFunc, bool StartImmediate):
 	threadfunc(pThreadFunc),
-	cancel(CreateBrEvent(false,false)),
+	cancel(CreateBrEvent(true, false)),
 	thread(INVALID_HANDLE_VALUE)
 {
 	if(StartImmediate)
