@@ -20,7 +20,7 @@ INetRequest : public IBrUnknown
 {
 	BRMETHOD(Start(CompletionHandler pCompletionHandler = nullptr));
 	BRMETHOD(WaitForCompletion());
-	BRMETHODTYPE(void*,GetResultData());
+	BRMETHODTYPE(void*, GetResultData());
 };
 
 BROWSER_INTERFACE("{A7C30AEF-C3C5-4E32-AAB6-D3E0BB7E0C1C}")
