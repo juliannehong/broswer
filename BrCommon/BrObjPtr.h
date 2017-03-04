@@ -75,6 +75,11 @@ public:
 		return pInterface;
 	}
 
+	T* GetInterface()
+	{
+		return pInterface;
+	}
+
 	CObjectPtr<T>& operator=(T* pOther)
 	{
 		Release();

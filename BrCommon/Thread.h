@@ -25,6 +25,8 @@ public:
 	BrResult BRMETHODCALLTYPE Start();
 	CObjectPtr<IBrEvent> BRMETHODCALLTYPE GetCancellationEvent();
 	BrResult BRMETHODCALLTYPE Cancel();
+	BrResult BRMETHODCALLTYPE CancelAndWait(U32 msTimeout);
+	BrResult BRMETHODCALLTYPE WaitForExit(U32 msTimeout);
 	BrResult BRMETHODCALLTYPE Terminate(BrResult ExitCode);
 	BrResult BRMETHODCALLTYPE GetExitCode();
 };

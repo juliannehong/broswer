@@ -10,7 +10,7 @@ struct NetException
 BrResult CNetRequest::ThreadFunc(CObjectPtr<IBrThread> pThread)
 {
 	//Open a network socket to the URL for HTTP.
-
+	
 }
 
 bool CNetRequest::IsIIDValid(BrGuid & riid)

@@ -38,8 +38,33 @@ void BrEvent::Reset()
 	ResetEvent(e);
 }
 
+bool BrEvent::WaitForSignal(U32 msTimeout)
+{
+	DWORD ret = WaitForSingleObject(e, msTimeout);
+	if(ret == WAIT_FAILED || ret == WAIT_TIMEOUT)
+	{
+		return false;
+	}
+	return true;
+}
 
 CObjectPtr<IBrEvent> CreateBrEvent(bool ManualReset, bool InitialState)
 {
 	return CObjectPtr<IBrEvent>(new BrEvent(ManualReset, InitialState), true);
+}
+
+bool COMMONAPI_ENTRY WaitForEvents(CObjectPtr<IBrEvent>* pEvents, U32 NumEvents, U32 & SignaledEvent, bool WaitForAll, U32 msTimeout)
+{
+	HANDLE* h = (HANDLE*)malloc(sizeof(HANDLE)* NumEvents); //TODO - REPLACE THIS WITH PRIVATE ALLOCATOR FOR MEMORY ISOLATION
+	for(U32 i = 0; i < NumEvents; ++i)
+	{
+		h[i] = ((BrEvent*)(pEvents[i].GetInterface()))->GetEventHandle();
+	}
+	DWORD ret = WaitForMultipleObjects(NumEvents, h, WaitForAll == true ? TRUE : FALSE, msTimeout);
+	if(ret == WAIT_FAILED || ret == WAIT_TIMEOUT)
+	{
+		return false;
+	}
+	SignaledEvent = ret - WAIT_OBJECT_0;
+	return true;
 }

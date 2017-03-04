@@ -24,7 +24,28 @@ IBrEvent : public IBrUnknown
 	BRMETHODTYPE(bool, IsSet());
 	BRMETHODTYPE(void, Set());
 	BRMETHODTYPE(void, Reset());
+	BRMETHODTYPE(bool, WaitForSignal(U32 msTimeout = -1));
 };
+
+bool
+COMMONAPI_ENTRY
+WaitForEvents(
+	CObjectPtr<IBrEvent>* pEvents,
+	U32 NumEvents,
+	U32 &SignaledEvent,
+	bool WaitForAll,
+	U32 msTimeout = -1
+);
+
+#ifdef __cplusplus
+
+template<U32 N>
+BR_INLINE bool WaitForEvents(CObjectPtr<IBrEvent> (&pEvents)[N], U32 &SignaledEvent, bool WaitForAll, U32 msTimeout = -1)
+{
+	return WaitForEvents(pEvents, N, SignaledEvent, WaitForAll, msTimeout);
+}
+
+#endif
 
 typedef std::function<BrResult(CObjectPtr<IBrThread> pThread)> ThreadFunction;
 
@@ -34,6 +55,8 @@ IBrThread : public IBrUnknown
 	BRMETHOD(Start());
 	BRMETHODTYPE(CObjectPtr<IBrEvent>, GetCancellationEvent());
 	BRMETHOD(Cancel());
+	BRMETHOD(CancelAndWait(U32 msTimeout));
+	BRMETHOD(WaitForExit(U32 msTimeout));
 	BRMETHOD(Terminate(BrResult ResultCode));
 	BRMETHOD(GetExitCode());
 };

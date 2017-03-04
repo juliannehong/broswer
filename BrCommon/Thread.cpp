@@ -95,6 +95,26 @@ BrResult CThread::Cancel()
 	return 0; // OK
 }
 
+BrResult CThread::CancelAndWait(U32 msTimeout)
+{
+	Cancel();
+	return WaitForExit(msTimeout);
+}
+
+BrResult CThread::WaitForExit(U32 msTimeout)
+{
+	DWORD res = WaitForSingleObject(thread, msTimeout);
+	if(res == WAIT_FAILED)
+	{
+		return -6; //FAILED_WAIT
+	}
+	if(res == WAIT_TIMEOUT)
+	{
+		return -4; // STILL_RUNNING
+	}
+	return 0; //OK
+}
+
 BrResult CThread::Terminate(BrResult ExitCode)
 {
 	if(thread != INVALID_HANDLE_VALUE)

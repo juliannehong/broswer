@@ -52,3 +52,21 @@ DEFINE_WEAK_SYMBOL(BrGuid, Name) = {Data1, Data2, Data3, { B1, B2, B3, B4, B5, B
 #endif
 
 typedef I32 BrResult;
+
+#ifndef ArraySize
+#ifdef __cplusplus
+
+//Some template magic from winnt.h.
+extern "C++" template <typename T, size_t N> char(*ArraySize_Impl(T(&)[N]))[N];
+
+#define ArraySizeCPP(A) sizeof(*ArraySize_Impl(A))
+#endif
+
+#define ArraySizeC(A) (sizeof(A) / sizeof(A[0]))
+
+#ifdef __cplusplus
+#define ArraySize(A) ArraySizeCPP(A)
+#else
+#define ArraySize(A) ArraySizeC(A)
+#endif
+#endif
